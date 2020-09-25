@@ -1,13 +1,22 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 5000; 
-const router = require('./routes/route')
+const router = require('./routes/route');
+const bodyParser = require('body-parser');
+const { Model } = require("objection");
+const Knex = require("knex");
+const knexconfig = require('./knexfile');
+
+//initialization
+const knex = Knex(knexconfig[process.env.NODE_ENV || 'development']);
+Model.knex(knex);
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 // import routes
-app.use("/restrau",router)
+app.use("/rest",router)
 
 app.listen(PORT , () => {
-    console.log("Listening on port 5000");
+    console.log("Listening on port :", +PORT);
 })
