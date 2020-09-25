@@ -7,6 +7,7 @@ import { RestaurantsContextProvider } from './contextApi/RestaurantsContext';
 
 const App = () => {
     return (
+        <RestaurantsContextProvider>
 
         
         <div className="container">
@@ -18,6 +19,7 @@ const App = () => {
                 </Switch>
             </Router>
         </div>
+        </RestaurantsContextProvider>
     )
 }
 
