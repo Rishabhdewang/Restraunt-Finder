@@ -6,11 +6,13 @@ const bodyParser = require('body-parser');
 const { Model } = require("objection");
 const Knex = require("knex");
 const knexconfig = require('./knexfile');
+const cors = require("cors")
 
 //initialization
 const knex = Knex(knexconfig[process.env.NODE_ENV || 'development']);
 Model.knex(knex);
 
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 

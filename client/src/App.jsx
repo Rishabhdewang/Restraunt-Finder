@@ -9,7 +9,6 @@ const App = () => {
     return (
         <RestaurantsContextProvider>
 
-        
         <div className="container">
             <Router>
                 <Switch>

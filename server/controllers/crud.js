@@ -19,7 +19,10 @@ const createRestaurants = async (req, res) => {
     if (notcreated){ return console.log(notcreated) ,res.status(401).send(notcreated) ;
     }
 
-    res.send(created)
+    res.json({
+        success : "true",
+        created
+    });
 
 }
 
@@ -29,8 +32,10 @@ const updateRestaurants = async (req, res) => {
     const [notupdated, updated] = await to(restrau.query().findById(id).patch(req.body));
     if (notupdated) return res.status(401).send(notupdated);
     else{
-    res.json("Updated");
-    // res.sendStatus(201);
+        res.json({
+            success : "true",
+            updated
+        });
     }
 }
 
@@ -50,11 +55,15 @@ const deleteRestaurants = async (req, res) => {
 
 const allRestaurants = async (req,res) => {
 
-    const [err,all] = await to(restrau.query());
+    const [err,Restaurants] = await to(restrau.query());
     if(err) return res.status(400).send(err), console.log(err)
     console.log(err)
 
-    res.status(201).send(all);
+    res.status(201);
+    res.json({
+        success : "true",
+        Restaurants 
+    });
 }
 
 // Restaurant by id 
@@ -63,7 +72,11 @@ const Restaurant = async (req,res) => {
     const [notfound,found] = await to(restrau.query().findById(req.params.id));
     if(notfound) return res.status(400).send(notfound);
 
-    res.status(201).send(found);
+    res.json({
+        success : "true",
+        Restaurant : { found }
+    });
+    
 }
 
 
