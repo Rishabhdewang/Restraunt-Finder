@@ -21,8 +21,9 @@ const RestaurantList = (props) => {
         fecthData();
     }, []);
      
-    const handleDelete = async(id) =>{
+    const handleDelete = async(e,id) =>{
         try {
+            e.stopPropagation();
             const response = await finder.delete(`/deleteRestaurant/${id}`);
             setRestaurants(restaurants.filter(restaurant => {
                 return restaurant.id !== id 
@@ -32,10 +33,19 @@ const RestaurantList = (props) => {
         }
     }
 
-    const handleUpdate = async (id) =>{
+    const handleUpdate = async (e,id) =>{
         try{
+            e.stopPropagation();
             history.push(`/Restaurant/${id}/updateRestaurant`)
         }catch(err) {}
+    }
+
+    const handleRestaurantDetail = async(e,id) =>{
+        try{
+            history.push(`/Restaurant/${id}`);
+        }catch(err){
+
+        }
     }
 
     return (
@@ -54,12 +64,12 @@ const RestaurantList = (props) => {
                 <tbody>
                     {  restaurants && restaurants.map((restaurant) => {
                         return (
-                            <tr key={restaurant.id}>
+                            <tr onClick = {(e) => handleRestaurantDetail(e,restaurant.id)} key={restaurant.id}>
                                 <td>{restaurant.Name}</td>
                                 <td>{restaurant.Location}</td>
                                 <td>{restaurant.PriceRange}</td>
-                                <td><button onClick ={()=>handleUpdate(restaurant.id)} className="btn btn-warning">Update</button></td> 
-                                <td><button onClick={() =>handleDelete(restaurant.id)} className="btn btn-danger">Delete</button></td>
+                                <td><button onClick ={(e)=>handleUpdate(e,restaurant.id)} className="btn btn-warning">Update</button></td> 
+                                <td><button onClick={(e) =>handleDelete(e,restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>
                         )
                     })}

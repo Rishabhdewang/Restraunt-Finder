@@ -1,4 +1,5 @@
 const restrau = require('../models/restaurantmodel');
+const reviews = require('../models/reviewmodel');
 
 const { to } = require('../global_functions');
 const { response } = require('express');
@@ -30,11 +31,11 @@ const createRestaurants = async (req, res) => {
 const updateRestaurants = async (req, res) => {
     const id = req.params.id;
     const [notupdated, updated] = await to(restrau.query().findById(id).patch(req.body));
-    if (notupdated) return res.status(401).send(notupdated);
+    if (notupdated) return res.status(400).send(notupdated), console.log(notupdated);
     else{
         res.json({
             success : "true",
-            updated
+            Updated :[ updated]
         });
     }
 }
@@ -72,10 +73,14 @@ const Restaurant = async (req,res) => {
     const [notfound,found] = await to(restrau.query().findById(req.params.id));
     if(notfound) return res.status(400).send(notfound);
 
+    // const [err, review] = await to(reviews.query().withGraphFetched("detailpage").throwIfNotFound());
+    // if(err) return res.status(401).send(err);
+
     res.json({
         success : "true",
-        Restaurant : { found }
+        found
     });
+ 
     
 }
 
