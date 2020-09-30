@@ -56,7 +56,7 @@ const RestaurantList = (props) => {
                         <th scope="col">Restaurant</th>
                         <th scope="col">Location</th>
                         <th scope="col">Price-Range</th>
-                        {/* <th scope="col">Ratings</th> */}
+                        <th scope="col">Ratings</th>
                         <th scope="col">Update</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -64,10 +64,11 @@ const RestaurantList = (props) => {
                 <tbody>
                     {  restaurants && restaurants.map((restaurant) => {
                         return (
+                            console.log(restaurants),
                             <tr onClick = {(e) => handleRestaurantDetail(e,restaurant.id)} key={restaurant.id}>
                                 <td>{restaurant.Name}</td>
                                 <td>{restaurant.Location}</td>
-                                <td>{restaurant.PriceRange}</td>
+                                <td>{restaurant.PriceRange}</td>    
                                 <td><button onClick ={(e)=>handleUpdate(e,restaurant.id)} className="btn btn-warning">Update</button></td> 
                                 <td><button onClick={(e) =>handleDelete(e,restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>

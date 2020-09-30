@@ -9,30 +9,38 @@ import AddReview from '../components/AddReview';
 const RestaurantdetailPage = (props) => {
 
     const { id } = useParams();
-    const {selectedRestaurant , setSelectedRestaurant} = useContext(RestaurantsContext);
+    const { selectedRestaurant, setSelectedRestaurant } = useContext(RestaurantsContext);
+    
 
-    useEffect(() =>{
-        const fetchData = async () =>{
+    useEffect(() => {
+        const fetchData = async () => {
             const response = await finder.get(`/Restaurant/${id}`);
-            setSelectedRestaurant(response.data.found);
+            setSelectedRestaurant(response.data);
             console.log(response)
         }
-        fetchData();    
-    },[]);
-    
+        fetchData();
+    }, []);
+
     return (
         <div>
-            {/* <h1 className= "text-center">Restaurant Details</h1> */}
-    <h1 className= "text-center">{selectedRestaurant && selectedRestaurant.Name }</h1>
-     {(
-     <>
-     <div className="mt-3">
-     {/* <div><Reviews  reviews={selectedRestaurant}/></div>
-     <div><AddReview/></div> */}
-     <StarRating rating={2}/>
-         </div>
-         </>
-     )}
+            <h1 className= "text-center">Restaurant Details</h1>
+            <h1 
+                className="text-center">
+                {/* {selectedRestaurant && selectedRestaurant.Restrua} */}
+            </h1>
+            {
+                <>
+                    <div className="mt-3">
+                        <div>
+                            <Reviews  reviews = {selectedRestaurant.Newreview}/>
+                            {/* {console.log(selectedRestaurant.Newreview)} */}
+                        </div>
+                            <div><AddReview/></div>
+                        {/* <StarRating rating={5} /> */}
+                    
+                    </div>
+                </>
+            }
         </div>
     )
 }

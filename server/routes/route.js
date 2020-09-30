@@ -6,5 +6,6 @@ router.get('/Restaurant/:id',crud.Restaurant);
 router.post('/createRestaurant',crud.createRestaurants);
 router.delete('/deleteRestaurant/:id',crud.deleteRestaurants);
 router.put('/updateRestaurant/:id',crud.updateRestaurants);
+router.post('/Restaurant/:id/addreview',crud.AddReview);
 
 module.exports= router;
