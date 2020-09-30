@@ -36,7 +36,7 @@ const RestaurantdetailPage = (props) => {
                             {/* {console.log(selectedRestaurant.Newreview)} */}
                         </div>
                             <div><AddReview/></div>
-                        {/* <StarRating rating={5} /> */}
+                        <StarRating rating={3} />
                     
                     </div>
                 </>
