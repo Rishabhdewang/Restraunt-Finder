@@ -31,12 +31,12 @@ const RestaurantdetailPage = (props) => {
             {
                 <>
                     <div className="mt-3">
+                    {/* <StarRating rating={} /> */}
                         <div>
                             <Reviews  reviews = {selectedRestaurant.Newreview}/>
-                            {/* {console.log(selectedRestaurant.Newreview)} */}
                         </div>
-                            <div><AddReview/></div>
-                        <StarRating rating={3} />
+                        <div><AddReview/></div>
+                        
                     
                     </div>
                 </>

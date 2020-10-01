@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import finder from '../api/finder'
 import { RestaurantsContext } from '../contextApi/RestaurantsContext';
 import {useHistory} from 'react-router-dom';
+import StarRating from './StarRating';
 
 const RestaurantList = (props) => {
 
@@ -69,6 +70,7 @@ const RestaurantList = (props) => {
                                 <td>{restaurant.Name}</td>
                                 <td>{restaurant.Location}</td>
                                 <td>{restaurant.PriceRange}</td>    
+                                <td>{<StarRating/>}</td>    
                                 <td><button onClick ={(e)=>handleUpdate(e,restaurant.id)} className="btn btn-warning">Update</button></td> 
                                 <td><button onClick={(e) =>handleDelete(e,restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>

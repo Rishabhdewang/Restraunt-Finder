@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import finder from '../api/finder';
 import { RestaurantsContext } from '../contextApi/RestaurantsContext';
+import StarRating from './StarRating';
+
 
 
 
@@ -14,9 +16,14 @@ const Reviews = ({ reviews }) => {
             {reviews && reviews.map((review) => {
                 return (
                     
-                        <div className="card text-white bg-primary mb-3 mb-4" style={{ maxWidth: "30%" }}>
+                        <div key={review.id} className="card text-white bg-primary mb-3 mb-4" style={{ maxWidth: "30%" }}>
                             <div className="card-header d-flex justify-content-around">
-                                {review.UserName}
+                               <span>
+                                   {review.UserName}
+                                </span> 
+                                <span>
+                                    <StarRating rating={review.Ratings} />
+                                </span>  
                             </div>
                             <div className="card-body">
                                 <p className="card-text">{review.Review} </p>

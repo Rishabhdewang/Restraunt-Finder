@@ -65,12 +65,14 @@ const allRestaurants = async (req, res) => {
 
     const [err, Restaurants] = await to(restrau.query().returning("*"));
     if (err) return res.status(400).send(err), console.log(err)
-    console.log(err)
 
+    const [hmm , restaurantRatingData] = await to(reviews.query().select("RestaurantId","COUNT(*)","TRUNC(AVG(Ratings),1)").groupBy("RestaurantId"))
+    console.log(restaurantRatingData)
     res.status(201);
     res.json({
         success: "true",
-        Restaurants
+        Restaurants,
+        sasa  : restaurantRatingData
     });
 }
 
@@ -120,6 +122,15 @@ const AddReview = async (req, res) => {
     });
 }
 
+const RatingData = async(req,res) => {
+
+    const [er ,restruId ]= await to(reviews.query().select("RestaurantId").count("Ratings").truncate("").groupBy("RestaurantId"));
+    if(er) return res.send(er)
+
+    res.send(restruId)
+const [hmm , restaurantRatingData] = await to(reviews.query().select("RestaurantId","COUNT(*)","TRUNC(AVG(Ratings),1)").groupBy("RestaurantId"))
+console.log(restaurantRatingData, restruId);
+}
 
 module.exports = {
     createRestaurants,
@@ -127,5 +138,6 @@ module.exports = {
     updateRestaurants,
     allRestaurants,
     Restaurant,
-    AddReview
+    AddReview,
+    RatingData
 }
