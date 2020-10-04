@@ -1,8 +1,6 @@
 import React, { Component, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import finder from '../api/finder';
-// import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
-// import './';
 
 
 const Login = () => {
@@ -15,11 +13,17 @@ const Login = () => {
 
         e.preventDefault();
         const response = await finder.post(`/SignUp`, { Email, Password });
-        console.log(response)
+        console.log(response.data.Success)
 
-        if (response) {
-            // history.push('/Login');
+        if (response.data.Success) {
+            history.push('/Login');
         } else {
+            return(
+            <>
+             <h1>User already exists</h1>
+            {/* <Redirect to='/Signup'/> */}
+            {history.push("/SignUp")}
+            </>)
         }
     }
 

@@ -36,7 +36,10 @@ const SignUp = async (req, res) => {
             Password: hashedpassword
         })
 
-        res.send(signup)
+        res.json({
+            Success : "true",
+            signup
+        })
 
     } catch (err) {
         res.send(err)
