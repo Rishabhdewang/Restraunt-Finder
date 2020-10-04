@@ -26,7 +26,7 @@ const Home = () => {
             <RestaurantList />
             
         <div className="container text-center">
-            <button color="black" onClick={handlelogout}>Log out</button>
+            <button color="#0000" onClick={handlelogout}>Log out</button>
         </div>
                         
         </div>
