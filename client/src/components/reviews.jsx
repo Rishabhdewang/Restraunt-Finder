@@ -4,9 +4,6 @@ import finder from '../api/finder';
 import { RestaurantsContext } from '../contextApi/RestaurantsContext';
 import StarRating from './StarRating';
 
-
-
-
 const Reviews = ({ reviews }) => {
 
     return (

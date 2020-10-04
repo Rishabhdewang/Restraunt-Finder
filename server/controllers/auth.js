@@ -20,9 +20,9 @@ const SignUp = async (req, res) => {
             return res.send("Password cannot be empty");
         }
 
-        let [notfound, found] = await to(auth.query().where("Email", email).first());
+        let [notfound, found] = await to(auth.query().findOne("Email", email).first());
         if (found) {
-            console.log(result);
+            // console.log(found);
             return res.send("Email already exist");
         }
 
@@ -39,7 +39,7 @@ const SignUp = async (req, res) => {
         res.send(signup)
 
     } catch (err) {
-        res.json("Error occur, please Retry", err)
+        res.send(err)
     }
 
 }
@@ -47,41 +47,58 @@ const SignUp = async (req, res) => {
 
 //Login User 
 const Login = async (req, res) => {
-    // try {
-    let email = req.body.Email;
-    let password = req.body.Password;
+    try {
+        let email = req.body.Email;
+        let password = req.body.Password;
 
-    if (!validator.isEmail(email || "")) {
-        return res.send("Enter a valid email address");
-    }
-    if (password === "") {
-        return res.send("Password cannot be empty");
-    }
-    // CHECK FOR NOT FOUND
-    let [not_found, found] = await to(auth.query().findOne("Email", email).throwIfNotFound());
-    // console.log(found);
-    if (not_found) {
-        return res.send("Email Not Found")
-    }
-
-    if (await bcrypt.compare(password, found.Password)) {
-        const accessToken = jwt.sign({
-            email: found.Email
-        }, process.env.ACCESS_TOKEN_SECRET)
-        console.log(accessToken);
-        if (accessToken) {
-            res.setHeader("Authorization", accessToken);
-            res.setHeader("access-control-expose-headers", "authorization");
-            res.send("User Logged in");
+        if (!validator.isEmail(email || "")) {
+            return res.send("Enter a valid email address");
+        }
+        if (password === "") {
+            return res.send("Password cannot be empty");
+        }
+        // CHECK FOR NOT FOUND
+        let [not_found, found] = await to(auth.query().findOne("Email", email).throwIfNotFound());
+        console.log(found);
+        if (not_found) {
+            return res.send("Email Not Found")
         }
 
-    } else {
-        res.send("Wrong password");
-    }
+        if (await bcrypt.compare(password, found.Password)) {
+            const accessToken = jwt.sign({
+                                     email: found.Email
+                                     }, process.env.ACCESS_TOKEN_SECRET)
+            // console.log(accessToken);
+            if (accessToken) {
+                res.setHeader("Authorization", accessToken);
+                res.setHeader("access-control-expose-headers", "authorization");
+                res.json({
+                    User: "Loggedin",
+                    accessToken: accessToken
+                });
+            }
 
+        } else {
+            res.send("Wrong password");
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+const AllUser = async (req, res) => {
+
+    const [err, all] = await to(auth.query());
+    if (err) return res.status(400).send(err)
+
+    res.json({
+        Succes: "true",
+        Data: all
+    })
 }
 
 module.exports = {
     SignUp,
-    Login
+    Login,
+    AllUser
 }

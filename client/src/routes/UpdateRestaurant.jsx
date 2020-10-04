@@ -2,13 +2,14 @@ import React, { useState, useContext, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { RestaurantsContext } from '../contextApi/RestaurantsContext';
 import finder from '../api/finder'; 
+import Axios from 'axios';
 
 const UpdateRestaurant = (props) => {
 
     const { id } = useParams()
 
-    // console.log(id, id.id);
-    const { restaurants } = useContext(RestaurantsContext);
+    console.log(id);
+    // const { restaurants } = useContext(RestaurantsContext);
     const history = useHistory();
 
     const [name, setName] = useState("");
@@ -20,11 +21,11 @@ const UpdateRestaurant = (props) => {
     const fetchData = async () => {
 
         const response = await finder.get(`/Restaurant/${id}`);
-        console.log(response.data.found);
+        console.log(response.data.Restrua);
 
-        setName(response.data.found.Name)
-        setLocation(response.data.found.Location)
-        setPriceRange(response.data.found.PriceRange)
+        setName(response.data.Restrua.Name)
+        setLocation(response.data.Restrua.Location)
+        setPriceRange(response.data.Restrua.PriceRange)
 
         };
         fetchData();
@@ -34,7 +35,7 @@ const UpdateRestaurant = (props) => {
 
         e.preventDefault();
         const updatedRestaurant = await finder.put(`/updateRestaurant/${id}` , {Name :name , Location : location ,PriceRange :priceRange })
-        history.push('/');
+        history.push('/Restaurants');
         console.log(updatedRestaurant);
     }
 

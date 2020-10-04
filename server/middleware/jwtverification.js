@@ -12,8 +12,7 @@ function authenticateToken(req, res, next){
         if (err) return err;
 
         // req.body.userId = userdetai.email;
-        
-
+    
         // res.send("jwt verified")
         next();
     });

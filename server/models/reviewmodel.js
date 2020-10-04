@@ -10,7 +10,7 @@ class Review extends Model{
         const restaurantmodel = require('./restaurantmodel');
         return {
             detailpage : {
-                relation : Model.HasManyRelations,
+                relation : Model.HasOneRelation,
                 modelClass : restaurantmodel,
                 join : {
                     from : "reviews.RestaurantId",

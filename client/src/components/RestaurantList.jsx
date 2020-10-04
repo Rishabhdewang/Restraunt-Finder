@@ -10,13 +10,17 @@ const RestaurantList = (props) => {
     let history = useHistory();
 
     useEffect(() => {
-
+        const token = JSON.parse(localStorage.getItem('token'))
         const fecthData = async () => {
             try {
-                const response = await finder.get('/allRestaurants');
+                const response = await finder.get('/allRestaurants',{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                });
+                console.log(response.data);
                 setRestaurants( response.data.Restaurants);
-                // console.log(setRestaurants(),response.data.Restaurants);
-
+                
             } catch (err) { }
         }
         fecthData();
@@ -49,6 +53,23 @@ const RestaurantList = (props) => {
         }
     }
 
+    const RenderingRating = (restaurant) =>{
+       
+        const data = restaurant.test[0]
+        {console.log(data)}
+        if(!data){
+           return <span className="text-warning">0 reviews</span>
+        } 
+        if(data)
+        return (
+         <>
+        <StarRating rating={parseFloat(data.avg).toFixed(1)} />
+        
+        <span className="text-warning ml-1">({data.count})</span>
+    </> 
+    )
+    }
+
     return (
         <div className="list-group">
             <table className="table table-hover table-dark">
@@ -63,14 +84,15 @@ const RestaurantList = (props) => {
                     </tr>
                 </thead>
                 <tbody>
+            
                     {  restaurants && restaurants.map((restaurant) => {
                         return (
-                            console.log(restaurants),
+                            // console.log(restaurant.test[0]),
                             <tr onClick = {(e) => handleRestaurantDetail(e,restaurant.id)} key={restaurant.id}>
                                 <td>{restaurant.Name}</td>
                                 <td>{restaurant.Location}</td>
                                 <td>{restaurant.PriceRange}</td>    
-                                <td>{<StarRating/>}</td>    
+                                <td>{RenderingRating(restaurant)}</td>    
                                 <td><button onClick ={(e)=>handleUpdate(e,restaurant.id)} className="btn btn-warning">Update</button></td> 
                                 <td><button onClick={(e) =>handleDelete(e,restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>

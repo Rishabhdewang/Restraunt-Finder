@@ -1,5 +1,9 @@
 const restrau = require('../models/restaurantmodel');
 const reviews = require('../models/reviewmodel');
+const {
+    fn
+} = require('objection');
+const knex = require('knex')
 
 const {
     to
@@ -10,6 +14,10 @@ const {
 const {
     param
 } = require('../routes/route');
+const {
+    raw
+} = require('body-parser');
+// const { fn } = require('sequelize/types');
 
 
 //create
@@ -63,16 +71,24 @@ const deleteRestaurants = async (req, res) => {
 
 const allRestaurants = async (req, res) => {
 
-    const [err, Restaurants] = await to(restrau.query().returning("*"));
+    // const [err, Restaurants] = await to(restrau.query().select(knex.raw(' * from restaurants left join (select "RestaurantId" , COUNT(*),avg("Ratings") as avgRating from reviews  group by "RestaurantId") reviews on restaurants.id = reviews."RestaurantId"')).returning("*"));
+    const [err, Restaurants] = await to( restrau.query()
+        .withGraphFetched("[test(Groupby)]")
+        .modifiers({
+            Groupby(builder) {
+                builder.count("id")
+                    .avg("Ratings")
+                    .groupBy("RestaurantId");
+            }
+        }))
     if (err) return res.status(400).send(err), console.log(err)
 
-    const [hmm , restaurantRatingData] = await to(reviews.query().select("RestaurantId","COUNT(*)","TRUNC(AVG(Ratings),1)").groupBy("RestaurantId"))
-    console.log(restaurantRatingData)
     res.status(201);
     res.json({
         success: "true",
+        // test
         Restaurants,
-        sasa  : restaurantRatingData
+        // sasa  : restaurantRatingData
     });
 }
 
@@ -86,10 +102,18 @@ const Restaurant = async (req, res) => {
     console.log(review)
     if (err) return res.status(401).send(err);
 
+
+    const noOfReview = await reviews.query().count("Review").where("RestaurantId", req.params.id);
+    const avgRating = await reviews.query()
+        .select(knex.raw('Round(avg("Ratings"),1)'))
+        .where("RestaurantId", req.params.id);
+
     res.json({
         success: "true",
-        Restrua : found,
-        Newreview : review 
+        Restrua: found,
+        Newreview: review,
+        noOfReview: noOfReview,
+        avgRating: avgRating
     });
 }
 
@@ -102,34 +126,62 @@ const AddReview = async (req, res) => {
 
     const [err, data] = await to(reviews.query().insert({
         RestaurantId,
-        UserName : Name,
+        UserName: Name,
         Ratings,
         Review
 
-    }).returning('*')
-    );
-    
+    }).returning('*'));
+
     console.log(data)
 
     if (err) return res.status(400).send(err);
 
     res.sendStatus(201).json({
         success: "true",
-            newreview : {
-                r:data.rows
+        newreview: {
+            r: data.rows
         }
-      
+
     });
 }
 
-const RatingData = async(req,res) => {
+const RatingData = async (req, res) => {
 
-    const [er ,restruId ]= await to(reviews.query().select("RestaurantId").count("Ratings").truncate("").groupBy("RestaurantId"));
-    if(er) return res.send(er)
+    // select * from restaurants left join (select RestaurantId , COUNT(*), TRUNC(Avg(Ratings),1) as avgRating from reviews 
+    // // group by RestaurantId) reviews on Restaurant.id = reviews.RestaurantId;
 
-    res.send(restruId)
-const [hmm , restaurantRatingData] = await to(reviews.query().select("RestaurantId","COUNT(*)","TRUNC(AVG(Ratings),1)").groupBy("RestaurantId"))
-console.log(restaurantRatingData, restruId);
+
+    // const review = await reviews.query().count("Review").where("RestaurantId",req.params.id);
+    // const avgRating = await reviews.query().select(knex.raw('Round(avg("Ratings"),1)')) ;
+    try {
+
+
+        // const test = await restrau.query().innerJoin('reviews' ,'restaurants.id', 'reviews.RestaurantId');
+        const test = await restrau.query()
+            .withGraphFetched("[test(Groupby)]")
+            .modifiers({
+                Groupby(builder) {
+                    builder.count("id").avg("Ratings").groupBy("RestaurantId");
+                }
+            })
+
+        // console.log(review)
+        res.send(test)
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+    }
+    // const [er, restruId] = await to(reviews
+    //                                 .query()
+    //                                 .select(raw("RestaurantId" ,fn.avg('Ratings')))
+    //                                 .groupBy("RestaurantId")
+    //                                     // ('reviews.Review' = "RestaurantId")
+
+    //                                 // .where("RestaurantId", req.params.id)
+    //                                 )
+    // if (er) return res.send(er)
+
+    // res.send(restruId)
 }
 
 module.exports = {

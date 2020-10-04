@@ -20,7 +20,7 @@ const AddReview = () => {
             Ratings: rating,
             Review: reviewText
         })
-        history.push('/');
+        history.push('/Restaurant');
         history.push(`/Restaurant/${id}`);
         console.log(response);
     }
