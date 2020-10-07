@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link , Redirect, useHistory } from 'react-router-dom';
+// import { Link , Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import finder from '../api/finder'; 
 import { useAuth } from '../contextApi/RestaurantsContext';
 
@@ -14,34 +15,31 @@ const Login = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     const handleLogin = async (e) => {
-
+        try{
         e.preventDefault();
         const response = await finder.post(`/Login`, { Email, Password })
             .then(
-               async (token) => {
+                (token) => {
+                    setLoggedIn(true);
                     if (token.data.accessToken) {
                         localStorage.setItem("token", JSON.stringify(token.data.accessToken));
-                        console.log("token added")
-                        setLoggedIn(true);
-                    }       
-                })
-            .then(
-                history.push('/Restaurants')
+                        // console.log("token added")
+                    if(isLoggedIn === true) {
             
-            )
-            .catch( err => {
-                    console.log(err)
-                });
-        if(isLoggedIn) {
-            return <Redirect  to='/Restaurants' />// Redirect is not working
-        }
+                        history.push('/Restaurants') // LINK is not working
+                        //  console.log( "logged in")
+                    } }      
+                })
+            }catch( err) {
+                   return console.log(err)
+                };
+    };
 
-        
-    }
 
-    return (
+    return ( 
+    
         <div className='container col-5 mt-5 mb-4 pt-5 bg-'>
-            <h1></h1>
+            {/* <h1></h1> */}
             <form>
                 <h3 className='text-center'>Log In</h3>
                 <div className="pt-3">

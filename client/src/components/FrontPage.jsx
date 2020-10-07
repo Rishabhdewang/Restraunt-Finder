@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import Login from './Login'
-import SignUp from './SignUp'
+// import Login from './Login'
+// import SignUp from './SignUp'
 
 const FrontPage = () => {
 

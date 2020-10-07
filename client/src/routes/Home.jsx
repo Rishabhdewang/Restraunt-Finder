@@ -1,10 +1,9 @@
-import React ,{ Component } from 'react'
+import React  from 'react'
 import Header from '../components/Header'
 import AddRestaurants from '../components/AddRestaurants'
 import RestaurantList from '../components/RestaurantList'
-import { Redirect, Route, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useAuth } from '../contextApi/RestaurantsContext'
-import logout from '../components/logout'
 
 const Home = () => {
 
@@ -13,8 +12,8 @@ const Home = () => {
     const handlelogout = () => {
         return (
         <>
-        {localStorage.removeItem("token"),
-        history.push('/Login')}     
+        {localStorage.removeItem("token")}
+        {history.push('/Login')}     
         </>
         )   
     }

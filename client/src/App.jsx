@@ -7,7 +7,6 @@ import { AuthContext, RestaurantsContextProvider } from './contextApi/Restaurant
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import FrontPage from './components/FrontPage';
-import logout from './components/logout';
 // import authcomponent from './components/authcomponent';
 // import './App.css';
 

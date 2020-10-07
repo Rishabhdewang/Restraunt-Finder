@@ -1,8 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
-import { RestaurantsContext } from '../contextApi/RestaurantsContext';
 import finder from '../api/finder'; 
-import Axios from 'axios';
 
 const UpdateRestaurant = (props) => {
 

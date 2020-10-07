@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import finder from '../api/finder';
 
 

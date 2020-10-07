@@ -42,7 +42,7 @@ const RestaurantList = (props) => {
         try {
             e.stopPropagation();
             history.push(`/Restaurant/${id}/updateRestaurant`)
-        } catch (err) { }
+        } catch (err) {  }
     }
 
     const handleRestaurantDetail = async (e, id) => {
@@ -55,7 +55,10 @@ const RestaurantList = (props) => {
 
     const RenderingRating = (restaurant) => {
 
-        const data = restaurant.test[0]
+        try{
+        if(restaurant) {
+        const dat = restaurant.test
+        const data =dat[0]
         // {console.log(data)}
         if (!data) {
             return <span className="text-warning">0 reviews</span>
@@ -67,7 +70,14 @@ const RestaurantList = (props) => {
                     <span className="text-warning ml-1">({data.count})</span>
                 </>
             )
-    }
+        }else{
+            return <span className="text-warning">0 reviews</span>
+        }
+}catch(error) {
+    // history.push('/Restaurants')
+    return console.log(error,"dfdfdf")
+}
+}
 
     return (
         <div className="list-group">
@@ -91,7 +101,7 @@ const RestaurantList = (props) => {
                                 <td>{restaurant.Name}</td>
                                 <td>{restaurant.Location}</td>
                                 <td>{restaurant.PriceRange}</td>
-                                <td>{RenderingRating(restaurant)}</td>
+                                <td> {RenderingRating(restaurant) || <span className="text-warning">0 reviews</span>}</td>
                                 <td><button onClick={(e) => handleUpdate(e, restaurant.id)} className="btn btn-warning">Update</button></td>
                                 <td><button onClick={(e) => handleDelete(e, restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>

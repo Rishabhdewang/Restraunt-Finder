@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import finder from '../api/finder';
 
@@ -20,7 +20,7 @@ const AddReview = () => {
             Ratings: rating,
             Review: reviewText
         })
-        history.push('/Restaurant');
+        history.push('/Restaurants');
         history.push(`/Restaurant/${id}`);
         console.log(response);
     }
@@ -47,7 +47,7 @@ const AddReview = () => {
                             onChange={(e) => setRating(e.target.value)}
                             id="ratings"
                             className="custom-select">
-                            <option disabled></option>
+                            <option disabled>0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>

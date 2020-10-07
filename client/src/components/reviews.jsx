@@ -1,7 +1,4 @@
-import React, { useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
-import finder from '../api/finder';
-import { RestaurantsContext } from '../contextApi/RestaurantsContext';
+import React from 'react'
 import StarRating from './StarRating';
 
 const Reviews = ({ reviews }) => {
